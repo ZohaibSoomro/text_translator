@@ -8,11 +8,12 @@ class Translator {
 
   Translator._();
 
-  Future<String> translateText(String text, {String toLanguage = 'ur'}) async {
+  Future<Map<String, String?>> translateText(String text,
+      {String toLanguage = 'ur'}) async {
     final apiUrl =
-        "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=$toLanguage";
+        "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=$toLanguage&toScript=Latn";
     final headers = {
-      "Ocp-Apim-Subscription-Key": "d4e7b4d7fb64481ebce4524ba5b6ef8a",
+      "Ocp-Apim-Subscription-Key": "ec13c379de544938a39fe15f65f51cf8",
       "Ocp-Apim-Subscription-Region": "centralindia",
       "Content-Type": "application/json; charset=UTF-8"
     };
@@ -25,16 +26,19 @@ class Translator {
     if (response.statusCode == 200) {
       final translatedText =
           jsonDecode(response.body)[0]['translations'][0]['text'];
-      return translatedText;
+      final translatedScript = jsonDecode(response.body)[0]['translations'][0]
+          ['transliteration']?['text'];
+      return {translatedText: translatedScript};
     } else {
       debugPrint(response.statusCode.toString());
+      debugPrint(response.headers.entries.last.toString());
     }
-    return "some error occured!";
+    return {"error": "some error occured!"};
   }
 
   Future<Map<String, String>> languages() async {
     const apiUrl =
-        "https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation";
+        "https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation,transliteration";
     Map<String, String> langMap = {};
     final response = await http.get(Uri.parse(apiUrl));
     if (response.statusCode == 200) {
@@ -43,7 +47,7 @@ class Translator {
         langMap[code] = data[code]['name'];
       }
     } else {
-      debugPrint(response.statusCode.toString());
+      debugPrint("code: ${response.statusCode.toString()}");
     }
     return langMap;
   }

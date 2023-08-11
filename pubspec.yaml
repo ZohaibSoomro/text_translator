@@ -9,10 +9,13 @@ environment:
   sdk: ">=3.0.3 <4.0.0"
 
 dependencies:
+  clay_containers: ^0.3.2
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  fluttertoast: ^8.2.2
   http: ^1.1.0
+  image_picker_android: ^0.8.7+4
   loading_overlay: ^0.3.0
 
 dev_dependencies:
@@ -23,8 +26,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   # example:
   # fonts:
   #   - family: Schyler

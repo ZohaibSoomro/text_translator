@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 
@@ -10,28 +11,31 @@ class ImageAnalyzer {
   static const requestUrl =
       "https://vision-as2.cognitiveservices.azure.com/vision/v3.2/read/analyze?language=en";
 
-  Future readTextFromImage() async {
+  Future<List<String>> readTextFromImage({Uint8List? byteData}) async {
     final headers = {
-      "Content-Type": "application/json",
+      "Content-Type":
+          byteData == null ? "application/json" : "application/octet-stream",
       "Ocp-Apim-Subscription-Key": subscriptionKey,
     };
-    // Uint8List bytes = await image.readAsBytes();
-    final body = jsonEncode({
-      "url":
-          "https://th.bing.com/th/id/OIP.dsEv4L08e6W-h9I7jVrFvgHaFL?pid=ImgDet&rs=1"
-    });
+    final body = byteData ??
+        jsonEncode({
+          "url":
+              "https://th.bing.com/th/id/OIP.dsEv4L08e6W-h9I7jVrFvgHaFL?pid=ImgDet&rs=1"
+        });
     final response =
         await http.post(Uri.parse(requestUrl), headers: headers, body: body);
     if (response.statusCode == 202) {
       final url = response.headers["operation-location"] as String;
-      print("operation id:$url");
-      fetchResults(url);
+      print("id: $url");
+      return await fetchResults(url);
     } else {
-      print(response.statusCode);
+      print(response.headers.entries.last);
+      print("code: ${response.statusCode}");
+      return [];
     }
   }
 
-  Future<void> fetchResults(String operationId) async {
+  Future<List<String>> fetchResults(String operationId) async {
     final headers = {
       "Ocp-Apim-Subscription-Key": subscriptionKey,
     };
@@ -40,12 +44,15 @@ class ImageAnalyzer {
       final data = jsonDecode(response.body);
       // print(data["status"]);
       final lines = data["analyzeResult"]["readResults"][0]['lines'];
+      List<String> linesList = [];
       for (var line in lines) {
-        print(line["text"]);
+        linesList.add(line['text']);
       }
+      return linesList;
     } else {
-      print(response.statusCode);
+      print("results code: ${response.statusCode}");
       print(response.body);
+      return [];
     }
   }
 }
