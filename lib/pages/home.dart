@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:text_translator/pages/speech_to_text.dart';
 import 'package:text_translator/pages/text_extraction_page.dart';
 import 'package:text_translator/pages/translation_page.dart';
+
+import 'text_to_speech_page.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -21,6 +24,10 @@ class Home extends StatelessWidget {
               context, 'Translator', Icons.translate, const TranslationPage()),
           buildMethod(context, 'Text extractor', Icons.wrap_text,
               const TextExtractionPage()),
+          buildMethod(context, 'Text to speech', Icons.audio_file,
+              const TextToSpeechPage()),
+          buildMethod(context, 'Speech to text', Icons.record_voice_over,
+              const SpeechToTextPage()),
         ],
       ),
     );

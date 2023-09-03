@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:loading_overlay/loading_overlay.dart';
-import 'package:text_translator/utils/image_analyzer.dart';
+import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:text_translator/utils/image_analyzer.dart';
 
 import '../widgets/gradient_button.dart';
 
@@ -77,13 +78,27 @@ class _TextExtractionPageState extends State<TextExtractionPage> {
                       tileColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
-                      trailing: IconButton(
-                          onPressed: () => onLineTapped(index),
-                          icon: const Icon(
-                            Icons.arrow_right_alt,
-                            size: 30,
-                            color: Colors.white,
-                          )),
+                      trailing: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => onLineTapped(index),
+                            icon: const Icon(
+                              Icons.arrow_right_alt,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .05,
+                            width: MediaQuery.of(context).size.width * .15,
+                            child: FilledButton(
+                                onPressed: () =>
+                                    copyToClipBoard(linesRead[index]),
+                                child: const Icon(Icons.copy)),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -91,6 +106,15 @@ class _TextExtractionPageState extends State<TextExtractionPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void copyToClipBoard(text) {
+    Clipboard.setData(ClipboardData(text: text));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Text copied to clipboard'),
       ),
     );
   }

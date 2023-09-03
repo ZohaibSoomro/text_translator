@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:text_translator/pages/translation_page.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';

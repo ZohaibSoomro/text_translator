@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:text_translator/widgets/language_drop_down.dart';
+import 'package:text_translator/widgets/list_drop_down.dart';
 
 import '../utils/translator.dart';
 
@@ -30,6 +30,12 @@ class _TranslationPageState extends State<TranslationPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LoadingOverlay(
       isLoading: isLoading,
@@ -50,10 +56,10 @@ class _TranslationPageState extends State<TranslationPage> {
               ),
             ),
             const SizedBox(height: 20),
-            LanguageDropDown(
+            ListDropDown(
               initialValue: toLanguage,
               onLanguageChanged: onLanguageChanged,
-              langList: languages,
+              entriesMap: languages,
             ),
             const SizedBox(height: 40),
             ElevatedButton(

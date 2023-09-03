@@ -18,8 +18,8 @@ class GradientButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: ClayContainer(
-        height: 50,
-        width: 150,
+        height: MediaQuery.of(context).size.height * 0.065,
+        width: MediaQuery.of(context).size.width * 0.6,
         borderRadius: 15,
         surfaceColor: Colors.white,
         parentColor: gradient.colors.last,
