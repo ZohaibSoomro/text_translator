@@ -72,34 +72,35 @@ class _TextExtractionPageState extends State<TextExtractionPage> {
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
-                      onTap: () => onLineTapped(index),
-                      title: Text(linesRead[index]),
-                      textColor: Colors.white,
-                      tileColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      trailing: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => onLineTapped(index),
-                            icon: const Icon(
-                              Icons.arrow_right_alt,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .05,
-                            width: MediaQuery.of(context).size.width * .15,
-                            child: FilledButton(
-                                onPressed: () =>
-                                    copyToClipBoard(linesRead[index]),
-                                child: const Icon(Icons.copy)),
-                          )
-                        ],
-                      ),
-                    ),
+                        onTap: () => onLineTapped(index),
+                        title: Text(linesRead[index]),
+                        textColor: Colors.white,
+                        tileColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        trailing:
+                            // Row(
+                            //   children: [
+                            //     IconButton(
+                            //       onPressed: () => onLineTapped(index),
+                            //       icon: const Icon(
+                            //         Icons.arrow_right_alt,
+                            //         size: 30,
+                            //         color: Colors.white,
+                            //       ),
+                            //     ),
+                            //     const SizedBox(width: 20),
+                            SizedBox(
+                          height: MediaQuery.of(context).size.height * .05,
+                          width: MediaQuery.of(context).size.width * .15,
+                          child: FilledButton(
+                              onPressed: () =>
+                                  copyToClipBoard(linesRead[index]),
+                              child: const Icon(Icons.copy)),
+                        )
+                        //   ],
+                        // ),
+                        ),
                   ),
                 ),
               ),
